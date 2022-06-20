@@ -18,7 +18,7 @@ import common.money.Percentage;
  * in expensive and/or complex dependencies such as a Database. Simple unit tests can then verify object behavior by
  * considering the state of this stub.
  */
-public class StubAccountRepository implements AccountRepository {
+class StubAccountRepository implements AccountRepository {
 
 	private Map<String, Account> accountsByCreditCard = new HashMap<String, Account>();
 

@@ -22,6 +22,7 @@ public class JdbcRestaurantRepositoryTests {
 	@BeforeEach
 	public void setUp() throws Exception {
 		// simulate the Spring bean initialization lifecycle:
+
 		// first, construct the bean
 		repository = new JdbcRestaurantRepository();
 
@@ -35,14 +36,16 @@ public class JdbcRestaurantRepositoryTests {
 	@AfterEach
 	public void tearDown() throws Exception {
 		// simulate the Spring bean destruction lifecycle:
+
+		// destroy the bean
 		repository.clearRestaurantCache();
 	}
 
 	@Test
 	public void findRestaurantByMerchantNumber() {
 		Restaurant restaurant = repository.findByMerchantNumber("1234567890");
-		assertNotNull(restaurant, "restaurant is null - check your repositories cache");
-		assertEquals("1234567890", restaurant.getNumber(),"number is wrong");
+		assertNotNull(restaurant, "restaurant is null - repository cache not likely initialized");
+		assertEquals("1234567890", restaurant.getNumber(), "number is wrong");
 		assertEquals("AppleBees", restaurant.getName(), "name is wrong");
 		assertEquals(Percentage.valueOf("8%"), restaurant.getBenefitPercentage(), "benefitPercentage is wrong");
 	}
@@ -65,9 +68,9 @@ public class JdbcRestaurantRepositoryTests {
 
 	private DataSource createTestDataSource() {
 		return new EmbeddedDatabaseBuilder()
-			.setName("rewards")
-			.addScript("/rewards/testdb/schema.sql")
-			.addScript("/rewards/testdb/data.sql")
-			.build();
+				.setName("rewards")
+				.addScript("/rewards/testdb/schema.sql")
+				.addScript("/rewards/testdb/data.sql")
+				.build();
 	}
 }

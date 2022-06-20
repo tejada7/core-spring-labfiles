@@ -1,8 +1,12 @@
 package rewards.internal.restaurant;
 
 import common.money.Percentage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,55 +47,46 @@ import java.util.Map;
  *   understand why. (If not, refer to lab document).
  *   We will fix this error in the next step.
  */
-
-public class JdbcRestaurantRepository implements RestaurantRepository {
+@Repository("restaurantRepository")
+public final class JdbcRestaurantRepository implements RestaurantRepository {
 
 	private DataSource dataSource;
 
 	/**
-	 * The Restaurant object cache. Cached restaurants are indexed
-	 * by their merchant numbers.
+	 * The Restaurant object cache. Cached restaurants are indexed by their merchant numbers.
 	 */
 	private Map<String, Restaurant> restaurantCache;
 
 	/**
-	 * The constructor sets the data source this repository will use to load
-	 * restaurants. When the instance of JdbcRestaurantRepository is created, a
-	 * Restaurant cache is populated for read only access
+	 * The constructor sets the data source this repository will use to load restaurants.
+	 * When the instance of JdbcRestaurantRepository is created, a Restaurant cache is
+	 * populated for read only access
+	 *
+	 * @param dataSource the data source
 	 */
 
-	public JdbcRestaurantRepository(DataSource dataSource) {
+	public JdbcRestaurantRepository(DataSource dataSource){
 		this.dataSource = dataSource;
 		this.populateRestaurantCache();
 	}
 
-	public JdbcRestaurantRepository() {
-	}
+	public JdbcRestaurantRepository(){}
 
+	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+
 
 	public Restaurant findByMerchantNumber(String merchantNumber) {
 		return queryRestaurantCache(merchantNumber);
 	}
 
 	/**
-	 * Helper method that populates the restaurantCache restaurant object
-	 * caches from the rows in the T_RESTAURANT table. Cached restaurants are indexed
-	 * by their merchant numbers. This method should be called on initialization.
+	 * Helper method that populates the {@link #restaurantCache restaurant object cache} from rows in the T_RESTAURANT
+	 * table. Cached restaurants are indexed by their merchant numbers. This method is called on initialization.
 	 */
-
-	/*
-	 * TODO-09: Make this method to be invoked after a bean gets created
-	 * - Mark this method with an annotation that will cause it to be
-	 *   executed by Spring after constructor & setter initialization has occurred.
-	 * - Re-run the RewardNetworkTests test. You should see the test succeeds.
-	 * - Note that populating the cache is not really a valid
-	 *   construction activity, so using a post-construct, rather than
-	 *   the constructor, is a better practice.
-	 */
-
+	@PostConstruct
 	void populateRestaurantCache() {
 		restaurantCache = new HashMap<String, Restaurant>();
 		String sql = "select MERCHANT_NUMBER, NAME, BENEFIT_PERCENTAGE from T_RESTAURANT";
@@ -137,11 +132,9 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 	/**
 	 * Helper method that simply queries the cache of restaurants.
 	 *
-	 * @param merchantNumber
-	 *            the restaurant's merchant number
+	 * @param merchantNumber the restaurant's merchant number
 	 * @return the restaurant
-	 * @throws EmptyResultDataAccessException
-	 *             if no restaurant was found with that merchant number
+	 * @throws EmptyResultDataAccessException if no restaurant was found with that merchant number
 	 */
 	private Restaurant queryRestaurantCache(String merchantNumber) {
 		Restaurant restaurant = restaurantCache.get(merchantNumber);
@@ -152,29 +145,17 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 	}
 
 	/**
-	 * Helper method that clears the cache of restaurants.
-	 * This method should be called when a bean is destroyed.
-	 *
-	 * TODO-10: Add a scheme to check if this method is being invoked
-	 * - Add System.out.println to this method.
-	 *
-	 * TODO-11: Have this method to be invoked before a bean gets destroyed
-	 * - Re-run RewardNetworkTests.
-	 * - Observe this method is not called.
-	 * - Use an appropriate annotation to register this method for a
-	 *   destruction lifecycle callback.
-	 * - Re-run the test and you should be able to see
-	 *   that this method is now being called.
+	 * Helper method that clears the cache of restaurants.  This method is called on destruction
 	 */
-	public void clearRestaurantCache() {
+	@PreDestroy
+	void clearRestaurantCache() {
 		restaurantCache.clear();
 	}
 
 	/**
 	 * Maps a row returned from a query of T_RESTAURANT to a Restaurant object.
 	 *
-	 * @param rs
-	 *            the result set with its cursor positioned at the current row
+	 * @param rs the result set with its cursor positioned at the current row
 	 */
 	private Restaurant mapRestaurant(ResultSet rs) throws SQLException {
 		// get the row column data

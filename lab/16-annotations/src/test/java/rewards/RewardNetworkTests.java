@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *   Note that this test passes only when all the required
  *   beans are correctly configured.
  */
-public class RewardNetworkTests {
+class RewardNetworkTests {
 
 	/**
 	 * The object being tested.
@@ -43,7 +43,7 @@ public class RewardNetworkTests {
 	}
 
 	@Test
-	public void testRewardForDining() {
+	void testRewardForDining() {
 		// create a new dining of 100.00 charged to credit card '1234123412341234' by merchant '123457890' as test input
 		Dining dining = Dining.createDining("100.00", "1234123412341234", "1234567890");
 
