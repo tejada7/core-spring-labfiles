@@ -20,7 +20,8 @@
         <jamon.version>2.82</jamon.version>
         <spring-security.version>5.8.0</spring-security.version>
 
-        <java.version>11</java.version>
+<!--        <java.version>8</java.version>-->
+<!--        <java.version>17</java.version>-->
 
         <!-- Enable maven support for Servlet 3 - no web.xml -->
         <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -30,6 +31,7 @@
 
         <!-- Without this, Eclipse will flag an error on pom.xml -->
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <!--
@@ -114,9 +116,16 @@
                 <!-- Set Java version -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+<!--                <configuration>-->
+<!--                    <source>${java.version}</source>-->
+<!--                    <target>${java.version}</target>-->
+<!--                </configuration>-->
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <release>17</release>
+                    <source>17</source>
+                    <target>17</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
             <plugin>

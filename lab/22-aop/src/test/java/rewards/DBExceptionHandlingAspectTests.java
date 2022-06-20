@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { DbExceptionTestConfig.class })
 @EnableAutoConfiguration
-public class DBExceptionHandlingAspectTests {
+class DBExceptionHandlingAspectTests {
 
     @Autowired
     AccountRepository repository;
 
     @Test
     @CaptureSystemOutput
-    public void testReportException(OutputCapture capture) {
+    void testReportException(OutputCapture capture) {
     	
     	// The repository.findByCreditCard(..) method below will 
     	// result in an exception because we are using empty database
