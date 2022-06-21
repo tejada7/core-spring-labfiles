@@ -5,8 +5,20 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import javax.sql.DataSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -83,33 +95,36 @@ import static org.junit.jupiter.api.Assertions.*;
  * - Run the test again.
  */
 
-public class RewardNetworkTests {
+@SpringJUnitConfig
+@ActiveProfiles({"jdbc", "jndi"})
+class RewardNetworkTests {
 
 	
 	/**
 	 * The object being tested.
 	 */
+	@Autowired
 	private RewardNetwork rewardNetwork;
 
 	/**
 	 * Need this to enable clean shutdown at the end of the application
 	 */
-	private ConfigurableApplicationContext context;
+	// private ConfigurableApplicationContext context;
+	//
+	// @BeforeEach
+	// public void setUp() {
+	// 	// Create the test configuration for the application from one file
+	// 	context = SpringApplication.run(TestInfrastructureConfig.class);
+	// 	// Get the bean to use to invoke the application
+	// 	rewardNetwork = context.getBean(RewardNetwork.class);
+	// }
 
-	@BeforeEach
-	public void setUp() {
-		// Create the test configuration for the application from one file
-		context = SpringApplication.run(TestInfrastructureConfig.class);
-		// Get the bean to use to invoke the application
-		rewardNetwork = context.getBean(RewardNetwork.class);
-	}
-
-	@AfterEach
-	public void tearDown() throws Exception {
-		// simulate the Spring bean destruction lifecycle:
-		if (context != null)
-			context.close();
-	}
+	// @AfterEach
+	// public void tearDown() throws Exception {
+	// 	// simulate the Spring bean destruction lifecycle:
+	// 	if (context != null)
+	// 		context.close();
+	// }
 
 	@Test
 	@DisplayName("Test if reward computation and distribution works")
@@ -149,5 +164,15 @@ public class RewardNetworkTests {
 				() -> assertEquals(2, contribution.getDistributions().size()),
 				() -> assertEquals(MonetaryAmount.valueOf("4.00"), contribution.getDistribution("Annabelle").getAmount()),
 				() -> assertEquals(MonetaryAmount.valueOf("4.00"), contribution.getDistribution("Corgan").getAmount()));
+	}
+
+	@Configuration
+	@Import(rewards.TestInfrastructureConfig.class)
+	static class TestInfrastructureLocalConfig {
+
+		@Bean
+		public static LoggingBeanPostProcessor loggingBean(){
+			return new LoggingBeanPostProcessor();
+		}
 	}
 }
