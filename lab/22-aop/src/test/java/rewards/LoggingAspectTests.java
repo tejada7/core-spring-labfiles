@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { SystemTestConfig.class })
 @EnableAutoConfiguration
-public class LoggingAspectTests {
+class LoggingAspectTests {
 
 	@Autowired
 	AccountRepository repository;

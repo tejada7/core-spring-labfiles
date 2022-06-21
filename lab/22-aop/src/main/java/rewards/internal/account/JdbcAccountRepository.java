@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
 import rewards.internal.exception.RewardDataAccessException;
 
 import common.money.MonetaryAmount;

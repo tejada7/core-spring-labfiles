@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes={SystemTestConfig.class})
 @EnableAutoConfiguration
-public class RewardNetworkTests {
+class RewardNetworkTests {
 
 	/**
 	 * The object being tested.
@@ -31,7 +31,7 @@ public class RewardNetworkTests {
 
 	@Test
 	@CaptureSystemOutput
-	public void testRewardForDining(OutputCapture capture) {
+	void testRewardForDining(OutputCapture capture) {
 		// create a new dining of 100.00 charged to credit card '1234123412341234' by merchant '123457890' as test input
 		Dining dining = Dining.createDining("100.00", "1234123412341234", "1234567890");
 
@@ -61,7 +61,7 @@ public class RewardNetworkTests {
 		
 		// TODO-06: Run this test. It should pass AND you should see TWO lines of
 		// log output from the LoggingAspect on the console
-		int expectedMatches = 2;
+		int expectedMatches = 4;
 		checkConsoleOutput(capture, expectedMatches);
 		
 		// TODO-09: Save all your work, and change the expected matches value above from 2 to 4.
