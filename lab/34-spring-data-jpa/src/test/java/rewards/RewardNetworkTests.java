@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableAutoConfiguration
 @SpringBootTest(classes = RewardsConfig.class)
-public class RewardNetworkTests {
+class RewardNetworkTests {
 
 	/**
 	 * The object being tested.

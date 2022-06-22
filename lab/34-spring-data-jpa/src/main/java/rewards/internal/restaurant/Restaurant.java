@@ -5,7 +5,7 @@ import common.money.Percentage;
 import rewards.Dining;
 import rewards.internal.account.Account;
 
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * Restaurants calculate how much benefit may be awarded to an account for
@@ -19,17 +19,24 @@ import javax.persistence.Transient;
 //                            NAME varchar(80) not null,
 //                            BENEFIT_PERCENTAGE decimal(5,2) not null,
 //                            BENEFIT_AVAILABILITY_POLICY varchar(1) not null, unique(MERCHANT_NUMBER));
+@Entity
+@Table(name = "T_RESTAURANT")
 public class Restaurant {
 
+	@Id
+	@Column(name = "id")
 	private Long entityId;
 
+	@Column(name = "MERCHANT_NUMBER")
 	private String number;
 
+	@Column(name = "NAME")
 	private String name;
 
 	// This is not a simple mapping as Percentage is not a simple type.
 	// You need to map Percentage.value from a column in T_RESTAURANT.  If unsure,
 	// look at how Beneficiary does it.
+	@AttributeOverride(name="value",column=@Column(name="BENEFIT_PERCENTAGE"))
 	private Percentage benefitPercentage;
 
 
@@ -44,7 +51,7 @@ public class Restaurant {
 
 	/**
 	 * Creates a new restaurant.
-	 * 
+	 *
 	 * @param number
 	 *            the restaurant's merchant number
 	 * @param name
@@ -58,7 +65,7 @@ public class Restaurant {
 	/**
 	 * Sets the percentage benefit to be awarded for eligible dining
 	 * transactions.
-	 * 
+	 *
 	 * @param benefitPercentage
 	 *            the benefit percentage
 	 */
@@ -69,7 +76,7 @@ public class Restaurant {
 	/**
 	 * Sets the policy that determines if a dining by an account at this
 	 * restaurant is eligible for benefit.
-	 * 
+	 *
 	 * @param benefitAvailabilityPolicy
 	 *            the benefit availability policy
 	 */
@@ -116,7 +123,7 @@ public class Restaurant {
 	/**
 	 * Calculate the benefit eligible to this account for dining at this
 	 * restaurant.
-	 * 
+	 *
 	 * @param account
 	 *            the account that dined at this restaurant
 	 * @param dining
