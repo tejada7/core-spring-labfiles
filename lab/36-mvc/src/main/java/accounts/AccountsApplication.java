@@ -8,7 +8,7 @@ import config.AccountsConfig;
 
 /**
  * Spring Boot application.
- *
+ * <p>
  * TODO-00: In this lab, you are going to exercise the following:
  * - Creating Spring Mvc REST controller
  * - Implementing handlers that handle HTTP GET request
@@ -16,11 +16,11 @@ import config.AccountsConfig;
  * - Exercising Spring Dev Tools
  * - Changing a port number of a Web application using server.port property
  * - Writing assertions in the test code
- *
+ * <p>
  * TODO-01: Open pom.xml or build.gradle for this project and check the dependencies.
  * - Note that we are using Spring Boot starter for Web
  * - Note that we are also using devtools
- *
+ * <p>
  * TODO-02: Run the application as a Spring Boot or Java application
  * - Access the home page: http://localhost:8080
  * - Click "List accounts as JSON" link in the homepage and note that it
@@ -30,9 +30,9 @@ import config.AccountsConfig;
 @Import(AccountsConfig.class)
 public class AccountsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AccountsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AccountsApplication.class, args);
+    }
 
 }
 

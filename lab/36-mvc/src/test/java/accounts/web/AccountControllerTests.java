@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * A JUnit test case testing the AccountController.
  */
-public class AccountControllerTests {
+class AccountControllerTests {
 
 	private static final long expectedAccountId = StubAccountManager.TEST_ACCOUNT_ID;
 	private static final String expectedAccountNumber = StubAccountManager.TEST_ACCOUNT_NUMBER;
@@ -28,8 +28,7 @@ public class AccountControllerTests {
 
 	// TODO-07: Remove the @Disabled annotation, run the test, it should now pass.
 	@Test
-	@Disabled
-	public void testHandleListRequest() {
+	void testHandleListRequest() {
 		List<Account> accounts = controller.accountList();
 
 		// Non-empty list containing the one and only test account
@@ -44,8 +43,7 @@ public class AccountControllerTests {
 
 	// TODO-10a: Remove the @Disabled annotation, run the test, it should pass.
 	@Test
-	@Disabled
-	public void testHandleDetailsRequest() {
+	void testHandleDetailsRequest() {
 		// TODO-09a: Implement test code which calls the accountDetails() method on the controller.
 		// - It will take one parameter - use "expectedAccountId" defined above
 		// - It will return an Account
@@ -54,6 +52,10 @@ public class AccountControllerTests {
 		// - The account is not null
 		// - The account id matches "expectedAccountId" defined above
 		// - The account number matches "expectedAccountNumber" defined above
-	}
+		final var account = controller.accountDetails(0);
 
+		assertNotNull(account);
+		assertEquals(expectedAccountId, (long) account.getEntityId());
+		assertEquals(expectedAccountNumber, account.getNumber());
+	}
 }
