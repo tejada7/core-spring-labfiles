@@ -14,17 +14,17 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the JDBC restaurant repository with a test data source to verify data access and relational-to-object mapping
  * behavior works as expected.
  */
-public class JdbcRestaurantRepositoryTests {
+class JdbcRestaurantRepositoryTests {
 
 	private JdbcRestaurantRepository repository;
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		repository = new JdbcRestaurantRepository(createTestDataSource());
 	}
 
 	@Test
-	public void testFindRestaurantByMerchantNumber() {
+	void testFindRestaurantByMerchantNumber() {
 		Restaurant restaurant = repository.findByMerchantNumber("1234567890");
 		assertNotNull(restaurant, "the restaurant should never be null");
 		assertEquals("1234567890", restaurant.getNumber(), "the merchant number is wrong");
@@ -35,7 +35,7 @@ public class JdbcRestaurantRepositoryTests {
 	}
 
 	@Test
-	public void testFindRestaurantByBogusMerchantNumber() {
+	void testFindRestaurantByBogusMerchantNumber() {
 		assertThrows(EmptyResultDataAccessException.class, ()-> {
 			repository.findByMerchantNumber("bogus");
 		});

@@ -12,15 +12,14 @@ import config.RewardsConfig;
 
 @Configuration
 @Import(RewardsConfig.class)
-public class SystemTestConfig {
+class SystemTestConfig {
 
-	
 	/**
 	 * Creates an in-memory "rewards" database populated 
 	 * with test data for fast testing
 	 */
 	@Bean
-	public DataSource dataSource(){
+	DataSource dataSource(){
 		return
 			(new EmbeddedDatabaseBuilder())
 			.addScript("classpath:rewards/testdb/schema.sql")

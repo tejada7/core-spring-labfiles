@@ -5,6 +5,7 @@ import common.money.Percentage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import javax.sql.DataSource;
@@ -18,20 +19,21 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the JDBC account repository with a test data source to verify data access and relational-to-object mapping
  * behavior works as expected.
  */
-public class JdbcAccountRepositoryTests {
+class JdbcAccountRepositoryTests {
 
 	private JdbcAccountRepository repository;
-
 	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		dataSource = createTestDataSource();
+		jdbcTemplate = new JdbcTemplate(dataSource);
 		repository = new JdbcAccountRepository(dataSource);
 	}
 
 	@Test
-	public void testFindAccountByCreditCard() {
+	void testFindAccountByCreditCard() {
 		Account account = repository.findByCreditCard("1234123412341234");
 		// assert the returned account contains what you expect given the state of the database
 		assertNotNull(account, "account should never be null");
@@ -52,14 +54,14 @@ public class JdbcAccountRepositoryTests {
 	}
 
 	@Test
-	public void testFindAccountByCreditCardNoAccount() {
+	void testFindAccountByCreditCardNoAccount() {
 		assertThrows(EmptyResultDataAccessException.class, () -> {
 			repository.findByCreditCard("bogus");
 		});
 	}
 
 	@Test
-	public void testUpdateBeneficiaries() throws SQLException {
+	void testUpdateBeneficiaries() throws SQLException {
 		Account account = repository.findByCreditCard("1234123412341234");
 		account.makeContribution(MonetaryAmount.valueOf("8.00"));
 		repository.updateBeneficiaries(account);
