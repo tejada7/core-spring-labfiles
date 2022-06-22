@@ -25,6 +25,16 @@
 
         <!-- TO-DO-02 : Refactor from discrete Spring Framework
              dependencies to JDBC and Test Spring Boot Starters -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Needed for the Spring JdbcTemplate -->
         <dependency>
