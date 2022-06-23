@@ -24,7 +24,6 @@ class AccountServiceMethodSecurityTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    @Disabled
     void getAuthoritiesForUser_should_return_403_for_user() {
 
         ResponseEntity<String> responseEntity = restTemplate.withBasicAuth("user", "user")
@@ -34,7 +33,6 @@ class AccountServiceMethodSecurityTest {
     }
 
     @Test
-    @Disabled
     void getAuthoritiesForUser_should_return_authorities_for_admin() {
 
         String[] authorities = restTemplate.withBasicAuth("admin", "admin")
@@ -42,7 +40,6 @@ class AccountServiceMethodSecurityTest {
         assertThat(authorities.length).isEqualTo(2);
         assertThat(authorities.toString().contains("ROLE_ADMIN"));
         assertThat(authorities.toString().contains("ROLE_USER"));
-
     }
 
     // TODO-12b: Write a test that verifies that getting authorities
@@ -51,10 +48,10 @@ class AccountServiceMethodSecurityTest {
     //           three roles "ROLE_SUPERADMIN", "ROLE_ADMIN", and
     //           "ROLE_USER".
     @Test
-    public void getAuthoritiesForUser_should_return_authorities_for_superadmin() {
-
-
-
+    void getAuthoritiesForUser_should_return_authorities_for_superadmin() {
+        String[] authorities = restTemplate.withBasicAuth("superadmin", "superadmin")
+                .getForObject("/authorities?username=superadmin", String[].class);
+        assertThat(authorities).containsExactlyInAnyOrder("ROLE_ADMIN", "ROLE_USER", "ROLE_SUPERADMIN");
     }
 
 }

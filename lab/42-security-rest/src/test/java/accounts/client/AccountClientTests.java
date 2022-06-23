@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest(classes = {RestWsApplication.class},
         webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AccountClientTests {
+class AccountClientTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -33,8 +33,7 @@ public class AccountClientTests {
     private Random random = new Random();
 
     @Test
-    @Disabled
-    public void listAccounts_using_invalid_user_should_return_401() throws Exception {
+    void listAccounts_using_invalid_user_should_return_401() throws Exception {
         ResponseEntity<String> responseEntity
                 = restTemplate.withBasicAuth("invalid", "invalid")
                               .getForEntity("/accounts", String.class);
@@ -42,8 +41,7 @@ public class AccountClientTests {
     }
 
     @Test
-    @Disabled
-    public void listAccounts_using_valid_user_should_succeed() {
+    void listAccounts_using_valid_user_should_succeed() {
         String url = "/accounts";
         // we have to use Account[] instead of List<Account>, or Jackson won't know what type to unmarshal to
         ResponseEntity<Account[]> responseEntity
@@ -58,8 +56,7 @@ public class AccountClientTests {
     }
 
     @Test
-    @Disabled
-    public void listAccounts_using_valid_admin_should_succeed() {
+    void listAccounts_using_valid_admin_should_succeed() {
         String url = "/accounts";
         // we have to use Account[] instead of List<Account>, or Jackson won't know what type to unmarshal to
         ResponseEntity<Account[]> responseEntity
@@ -74,8 +71,7 @@ public class AccountClientTests {
     }
 
     @Test
-    @Disabled
-    public void getAccount_using_valid_user_should_succeed() {
+    void getAccount_using_valid_user_should_succeed() {
         String url = "/accounts/{accountId}";
         ResponseEntity<Account> responseEntity
                 = restTemplate.withBasicAuth("user", "user")
@@ -88,8 +84,7 @@ public class AccountClientTests {
     }
 
     @Test
-    @Disabled
-    public void createAccount_using_admin_should_return_201() {
+    void createAccount_using_admin_should_return_201() {
         String url = "/accounts";
         // use a unique number to avoid conflicts
         String number = String.format("12345%4d", random.nextInt(10000));
@@ -105,15 +100,12 @@ public class AccountClientTests {
     //          is not permitted to create a new Account
     // - Use the code above as a guidance
     @Test
-    public void createAccount_using_user_should_return_403() throws Exception {
-
-
+    void createAccount_using_user_should_return_403() throws Exception {
 
     }
 
     @Test
-    @Disabled
-    public void addAndDeleteBeneficiary_using_superadmin_should_succeed() {
+    void addAndDeleteBeneficiary_using_superadmin_should_succeed() {
         // perform both add and delete to avoid issues with side effects
         String addUrl = "/accounts/{accountId}/beneficiaries";
         URI newBeneficiaryLocation
