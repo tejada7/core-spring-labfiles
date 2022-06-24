@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * A JUnit test case testing the AccountController.
  */
-public class AccountControllerTests {
+class AccountControllerTests {
 
 	private AccountController controller;
 
