@@ -1,8 +1,11 @@
 package config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import rewards.RewardNetwork;
 import rewards.internal.RewardNetworkImpl;
 import rewards.internal.account.AccountRepository;
@@ -17,7 +20,9 @@ import javax.sql.DataSource;
 
 //	TODO-03: Add an annotation to enable Spring transaction
 
-@Configuration
+@Configuration // or @SpringBootApplication so that @EnableTransactionManagement is no longer required
+@EnableTransactionManagement // Not required if using Spring Boot
+@SpringBootConfiguration
 public class RewardsConfig {
 
 	@Autowired
