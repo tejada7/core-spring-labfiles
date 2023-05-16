@@ -8,6 +8,7 @@ import rewards.internal.account.Account;
 
 import java.util.List;
 
+import static org.assertj.core.api.BDDSoftAssertions.thenSoftly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -28,8 +29,7 @@ public class AccountControllerTests {
 
 	// TODO-07: Remove the @Disabled annotation, run the test, it should now pass.
 	@Test
-	@Disabled
-	public void testHandleListRequest() {
+	void testHandleListRequest() {
 		List<Account> accounts = controller.accountList();
 
 		// Non-empty list containing the one and only test account
@@ -44,16 +44,20 @@ public class AccountControllerTests {
 
 	// TODO-10a: Remove the @Disabled annotation, run the test, it should pass.
 	@Test
-	@Disabled
-	public void testHandleDetailsRequest() {
+	void testHandleDetailsRequest() {
 		// TODO-09a: Implement test code which calls the accountDetails() method on the controller.
 		// - It will take one parameter - use "expectedAccountId" defined above
 		// - It will return an Account
-
+		final var actualAccount = controller.accountDetails(expectedAccountId);
 		// TODO-09b: Define the following assertions:
 		// - The account is not null
 		// - The account id matches "expectedAccountId" defined above
 		// - The account number matches "expectedAccountNumber" defined above
+		thenSoftly(softly -> {
+			softly.then(actualAccount).isNotNull();
+			softly.then(actualAccount.getEntityId()).isEqualTo(expectedAccountId);
+			softly.then(actualAccount.getNumber()).isEqualTo(expectedAccountNumber);
+		});
 	}
 
 }
