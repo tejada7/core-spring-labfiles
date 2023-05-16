@@ -1,9 +1,13 @@
 package rewards.internal;
 
+import common.money.MonetaryAmount;
+import rewards.AccountContribution;
 import rewards.Dining;
 import rewards.RewardConfirmation;
 import rewards.RewardNetwork;
+import rewards.internal.account.Account;
 import rewards.internal.account.AccountRepository;
+import rewards.internal.restaurant.Restaurant;
 import rewards.internal.restaurant.RestaurantRepository;
 import rewards.internal.reward.RewardRepository;
 
@@ -14,6 +18,7 @@ import rewards.internal.reward.RewardRepository;
  * the domain-layer to carry out the process of rewarding benefits to accounts for dining.
  * 
  * Said in other words, this class implements the "reward account for dining" use case.
+ *
  *
  * TODO-00: In this lab, you are going to exercise the following:
  * - Understanding internal operations that need to be performed to implement
@@ -53,6 +58,11 @@ public class RewardNetworkImpl implements RewardNetwork {
 		// TODO-07: Write code here for rewarding an account according to
 		//          the sequence diagram in the lab document
 		// TODO-08: Return the corresponding reward confirmation
-		return null;
+		final var account = accountRepository.findByCreditCard(dining.getCreditCardNumber());
+		final var restaurant = restaurantRepository.findByMerchantNumber(dining.getMerchantNumber());
+		final var monetaryAmount = restaurant.calculateBenefitFor(account, dining);
+		final var accountContribution = account.makeContribution(monetaryAmount);
+		accountRepository.updateBeneficiaries(account);
+		return rewardRepository.confirmReward(accountContribution, dining);
 	}
 }
