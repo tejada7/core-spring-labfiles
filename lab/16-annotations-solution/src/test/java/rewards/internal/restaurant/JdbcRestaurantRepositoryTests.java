@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests the JDBC restaurant repository with a test data source to verify data access and relational-to-object mapping
  * behavior works as expected.
  */
-public class JdbcRestaurantRepositoryTests {
+class JdbcRestaurantRepositoryTests {
 
 	private JdbcRestaurantRepository repository;
 

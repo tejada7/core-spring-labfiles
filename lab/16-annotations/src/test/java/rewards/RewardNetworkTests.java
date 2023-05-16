@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  *   Note that this test passes only when all the required
  *   beans are correctly configured.
  */
-public class RewardNetworkTests {
+class RewardNetworkTests {
 
 	/**
 	 * The object being tested.
