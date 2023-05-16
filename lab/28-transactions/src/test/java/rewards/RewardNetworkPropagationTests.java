@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { SystemTestConfig.class })
-public class RewardNetworkPropagationTests {
+class RewardNetworkPropagationTests {
 
 	/**
 	 * The object being tested.
@@ -58,7 +58,7 @@ public class RewardNetworkPropagationTests {
 	}
 
 	@Test
-	public void testPropagation() {
+	void testPropagation() {
 		// Open a transaction for testing
 		TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
 
