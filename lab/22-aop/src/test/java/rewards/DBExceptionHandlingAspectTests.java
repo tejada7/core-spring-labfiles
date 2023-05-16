@@ -25,7 +25,7 @@ public class DBExceptionHandlingAspectTests {
 
     @Test
     @CaptureSystemOutput
-    public void testReportException(OutputCapture capture) {
+    void testReportException(OutputCapture capture) {
     	
     	// The repository.findByCreditCard(..) method below will 
     	// result in an exception because we are using empty database
