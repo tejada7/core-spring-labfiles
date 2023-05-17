@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AccountController.class)
 @ContextConfiguration(classes = {RestWsApplication.class, RestSecurityConfig.class, CustomAuthenticationProvider.class})
-public class AccountControllerCustomAuthenticationProviderTests {
+class AccountControllerCustomAuthenticationProviderTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,9 +42,7 @@ public class AccountControllerCustomAuthenticationProviderTests {
     private AccountService accountService;
 
     @Test
-    @Disabled
-    public void accountDetails_with_spring_credentials_should_return_200() throws Exception {
-
+    void accountDetails_with_spring_credentials_should_return_200() throws Exception {
         // arrange
         given(accountManager.getAccount(0L)).willReturn(new Account("1234567890", "John Doe"));
 
@@ -56,8 +54,6 @@ public class AccountControllerCustomAuthenticationProviderTests {
 
         // verify
         verify(accountManager).getAccount(0L);
-
     }
 
 }
-

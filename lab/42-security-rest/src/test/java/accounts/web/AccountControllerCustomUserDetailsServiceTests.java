@@ -33,7 +33,7 @@ import rewards.internal.account.Account;
 
 @WebMvcTest(AccountController.class)
 @ContextConfiguration(classes = {RestWsApplication.class, RestSecurityConfig.class, CustomUserDetailsService.class})
-public class AccountControllerCustomUserDetailsServiceTests {
+class AccountControllerCustomUserDetailsServiceTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,10 +45,8 @@ public class AccountControllerCustomUserDetailsServiceTests {
     private AccountService accountService;
 
     @Test
-    @Disabled
     @WithUserDetails("joe")
-    public void accountDetails_with_joe_credentials_should_return_200() throws Exception {
-
+    void accountDetails_with_joe_credentials_should_return_200() throws Exception {
         // arrange
         given(accountManager.getAccount(0L)).willReturn(new Account("1234567890", "John Doe"));
 
@@ -59,14 +57,11 @@ public class AccountControllerCustomUserDetailsServiceTests {
 
         // verify
         verify(accountManager).getAccount(0L);
-
     }
 
     @Test
-    @Disabled
     @WithUserDetails("mary")
-    public void accountDetails_with_mary_credentials_should_return_200() throws Exception {
-
+    void accountDetails_with_mary_credentials_should_return_200() throws Exception {
         // arrange
         given(accountManager.getAccount(0L)).willReturn(new Account("1234567890", "John Doe"));
 
@@ -77,8 +72,5 @@ public class AccountControllerCustomUserDetailsServiceTests {
 
         // verify
         verify(accountManager).getAccount(0L);
-
     }
-
 }
-
