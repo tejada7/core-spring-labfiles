@@ -16,30 +16,27 @@ import static org.assertj.core.api.Assertions.*;
 // - Remove @Disabled annotation from each test and run it
 // - Make sure all tests pass
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AccountClientSecurityTests {
+class AccountClientSecurityTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    @Disabled
-    public void any_user_can_access_health_endpoint() {
+    void any_user_can_access_health_endpoint() {
         ResponseEntity<String> responseEntity
                 = restTemplate.getForEntity("/actuator/health", String.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
-    @Disabled
-    public void any_user_can_access_info_endpoint() {
+    void any_user_can_access_info_endpoint() {
         ResponseEntity<String> responseEntity
                 = restTemplate.getForEntity("/actuator/info", String.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
-    @Disabled
-    public void any_user_cannot_access_conditions_endpoint() {
+    void any_user_cannot_access_conditions_endpoint() {
         ResponseEntity<String> responseEntity
                 = restTemplate.withBasicAuth("anyuser", "anyuser")
                               .getForEntity("/actuator/conditions", String.class);
@@ -47,8 +44,7 @@ public class AccountClientSecurityTests {
     }
 
     @Test
-    @Disabled
-    public void user_in_ADMIN_role_can_access_conditions_endpoint() {
+    void user_in_ADMIN_role_can_access_conditions_endpoint() {
         ResponseEntity<String> responseEntity
                 = restTemplate.withBasicAuth("admin", "admin")
                               .getForEntity("/actuator/conditions", String.class);
@@ -56,8 +52,7 @@ public class AccountClientSecurityTests {
     }
 
     @Test
-    @Disabled
-    public void user_in_ACTUATOR_role_cannot_access_conditions_endpoint() {
+    void user_in_ACTUATOR_role_cannot_access_conditions_endpoint() {
         ResponseEntity<String> responseEntity
                 = restTemplate.withBasicAuth("actuator", "actuator")
                               .getForEntity("/actuator/conditions", String.class);

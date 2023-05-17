@@ -37,15 +37,14 @@ public class AccountControllerTests {
 		// TODO-10: Fix compiler error
 		// - This constructor needs to pass MeterRegistry object as well
 		// - Run the tests (except the @Disabled ones) in this test class, they should pass
-		controller = new AccountController(new StubAccountManager());
+		controller = new AccountController(new StubAccountManager(), registry);
 	}
 
 	@Test
 	// TODO-19: Test the actuator endpoints
 	// - Remove @Disabled annotation below
 	// - Run this test - it should pass
-	@Disabled
-	public void testHandleDetailsRequest() {
+	void testHandleDetailsRequest() {
 		Account account = controller.accountDetails(0);
 		assertNotNull(account);
 		assertEquals(Long.valueOf(0), account.getEntityId());
@@ -55,7 +54,7 @@ public class AccountControllerTests {
 	}
 
 	@Test
-	public void testHandleSummaryRequest() {
+	void testHandleSummaryRequest() {
 		List<Account> accounts = controller.accountSummary();
 		assertNotNull(accounts);
 		assertEquals(1, accounts.size());

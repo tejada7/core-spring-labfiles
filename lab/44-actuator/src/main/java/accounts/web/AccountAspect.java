@@ -1,5 +1,12 @@
 package accounts.web;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
+
 /*
  * TODO-26 (Optional): Use AOP for counting logic
  * - Add `spring-boot-starter-aop` starter to the `pom.xml` or the
@@ -13,5 +20,22 @@ package accounts.web;
  * - Access `/accounts` several times and verify the metrics of
  *   `/actuator/metrics/account.fetch?tag=type:fromAspect
  */
+@Aspect
+@Component
 public class AccountAspect {
+
+    private final Counter accountSummaryCounter;
+
+    public AccountAspect(final MeterRegistry meterRegistry) {
+        accountSummaryCounter = meterRegistry.counter("account.fetch", "type", "fromAspect");
+    }
+
+    @Pointcut("execution(* accounts.web.AccountController.accountSummary())")
+    private void accountSummaryPointCut() {
+    }
+
+    @Before("accountSummaryPointCut()")
+    private void accountSummaryAdvice() {
+        accountSummaryCounter.increment();
+    }
 }

@@ -1,5 +1,10 @@
 package accounts.web;
 
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.stereotype.Component;
+import rewards.internal.restaurant.RestaurantRepository;
+
 /**
  * TODO-16a: Create custom health indicator
  * - Make this class implement HealthIndicator interface
@@ -9,8 +14,23 @@ package accounts.web;
  *   (no restaurants) or UP otherwise. (Note that RestaurantRepository
  *   has a method that returns number of restaurants.)
  */
-public class RestaurantHealthCheck {
+@Component
+public class RestaurantHealthCheck implements HealthIndicator {
 
+    private final RestaurantRepository restaurantRepository;
+
+    public RestaurantHealthCheck(final RestaurantRepository restaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
+    }
+
+    @Override
+    public Health health() {
+        final var restaurantCount = restaurantRepository.getRestaurantCount();
+        return (restaurantCount == null || restaurantCount == 0
+                ? Health.status("NO_RESTAURANTS").withDetail("restaurant-count", restaurantCount)
+                : Health.up())
+                .build();
+    }
 }
 
 
@@ -21,7 +41,7 @@ public class RestaurantHealthCheck {
  * - Include the restaurant count as extra detail when DOWN state.
  * - Instead of returning DOWN when there are no restaurants,
  *   define and use a custom status called NO_RESTAURANTS.
- * - When there are no restaurants in the DB, what top-level status
+ * - When there are no restaurants in the DB, what top-level status9
  *   is returned for the "application" health group?
  * - Set "management.endpoint.health.group.application.status.order" property
  *   in the "application.properties" file so that NO_RESTAURANTS
