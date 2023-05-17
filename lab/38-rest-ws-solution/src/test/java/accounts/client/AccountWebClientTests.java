@@ -6,8 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -15,13 +17,14 @@ import rewards.internal.account.Account;
 import rewards.internal.account.Beneficiary;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(classes = RestWsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AccountWebClientTests {
+class AccountWebClientTests {
 
     @LocalServerPort
     private int port;
@@ -33,6 +36,7 @@ public class AccountWebClientTests {
 
     private Random random = new Random();
     private WebClient webClient;
+    private WebTestClient webTestClient;
 
     @BeforeEach
     void setUp() {
@@ -40,20 +44,20 @@ public class AccountWebClientTests {
     }
 
     @Test
-    public void listAccounts_WebClient_retrieve_blocking() {
-
-        Account[] accounts = webClient.get()
+    void listAccounts_WebClient_retrieve_blocking() {
+        final var accounts = webClient.get()
                                       .uri("/accounts")
                                       .accept(MediaType.APPLICATION_JSON)
                                       .retrieve()
-                                      .bodyToMono(Account[].class)
+                                      // .bodyToMono(Account[].class)
+                                      .bodyToMono(new ParameterizedTypeReference<List<Account>>() {})
                                       .block();
 
-        System.out.println(accounts.length);
-        assertTrue(accounts.length >= 21, "Expected 21 accounts, but found " + accounts.length);
-        assertEquals("Keith and Keri Donald", accounts[0].getName());
-        assertEquals(2, accounts[0].getBeneficiaries().size());
-        assertEquals(Percentage.valueOf("50%"), accounts[0].getBeneficiary("Annabelle").getAllocationPercentage());
+        System.out.println(accounts.size());
+        assertTrue(accounts.size() >= 21, "Expected 21 accounts, but found " + accounts.size());
+        assertEquals("Keith and Keri Donald", accounts.get(0).getName());
+        assertEquals(2, accounts.get(0).getBeneficiaries().size());
+        assertEquals(Percentage.valueOf("50%"), accounts.get(0).getBeneficiary("Annabelle").getAllocationPercentage());
     }
 
     @Test
